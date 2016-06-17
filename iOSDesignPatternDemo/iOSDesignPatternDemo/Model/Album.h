@@ -21,6 +21,6 @@
 /** 发布年 */
 @property (nonatomic, copy, readonly) NSString *year;
 
-- (instancetype)initWithTitle:(NSString *)title artist:(NSString *)artist genre:(NSString *)genre coverUrl:(NSString *)coverUrl year:(NSString *)year;
+- (instancetype)initWithTitle:(NSString *)title artist:(NSString *)artist coverUrl:(NSString *)coverUrl year:(NSString *)year;
 
 @end

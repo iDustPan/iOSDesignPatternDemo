@@ -18,6 +18,8 @@
 
 @implementation AlbumView
 
+#pragma mark - lazyLoad
+
 - (UIImageView *)coverImage {
     if (!_coverImage) {
         _coverImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width - 10, self.frame.size.height - 10)];
@@ -34,6 +36,8 @@
     }
     return _indicator;
 }
+
+#pragma mark - initiallize
 
 - (instancetype)initWithFrame:(CGRect)frame albumCover:(NSString *)albumCover {
     if (self = [super initWithFrame:frame]) {

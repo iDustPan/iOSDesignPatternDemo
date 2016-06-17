@@ -19,6 +19,8 @@
 		795D12A71D14346C0016695C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12A61D14346C0016695C /* ViewController.m */; };
 		795D12AA1D1434F70016695C /* Album.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12A91D1434F70016695C /* Album.m */; };
 		795D12AD1D1437F30016695C /* AlbumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12AC1D1437F30016695C /* AlbumView.m */; };
+		795D12B01D143BE70016695C /* LibraryAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12AF1D143BE70016695C /* LibraryAPI.m */; };
+		795D12B31D143D470016695C /* PersistencyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12B21D143D470016695C /* PersistencyManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,10 @@
 		795D12A91D1434F70016695C /* Album.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Album.m; sourceTree = "<group>"; };
 		795D12AB1D1437F30016695C /* AlbumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumView.h; sourceTree = "<group>"; };
 		795D12AC1D1437F30016695C /* AlbumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumView.m; sourceTree = "<group>"; };
+		795D12AE1D143BE70016695C /* LibraryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAPI.h; sourceTree = "<group>"; };
+		795D12AF1D143BE70016695C /* LibraryAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAPI.m; sourceTree = "<group>"; };
+		795D12B11D143D470016695C /* PersistencyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistencyManager.h; sourceTree = "<group>"; };
+		795D12B21D143D470016695C /* PersistencyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistencyManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +110,10 @@
 		795D12A11D1434460016695C /* API */ = {
 			isa = PBXGroup;
 			children = (
+				795D12AE1D143BE70016695C /* LibraryAPI.h */,
+				795D12AF1D143BE70016695C /* LibraryAPI.m */,
+				795D12B11D143D470016695C /* PersistencyManager.h */,
+				795D12B21D143D470016695C /* PersistencyManager.m */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -210,11 +220,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				795D12B01D143BE70016695C /* LibraryAPI.m in Sources */,
 				795D12A71D14346C0016695C /* ViewController.m in Sources */,
 				795D12AD1D1437F30016695C /* AlbumView.m in Sources */,
 				795D12861D142F390016695C /* AppDelegate.m in Sources */,
 				795D12831D142F390016695C /* main.m in Sources */,
 				795D12AA1D1434F70016695C /* Album.m in Sources */,
+				795D12B31D143D470016695C /* PersistencyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
