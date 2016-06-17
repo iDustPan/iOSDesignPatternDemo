@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Album+TableRepresentation.h"
+#import "LibraryAPI.h"
+
 
 @interface ViewController : UIViewController
+
+
 
 
 @end
