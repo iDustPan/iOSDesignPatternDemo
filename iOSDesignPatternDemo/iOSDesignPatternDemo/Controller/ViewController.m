@@ -9,10 +9,13 @@
 #import "ViewController.h"
 #import "LibraryAPI.h"
 #import "Album+TableRepresentation.h"
+#import "HorizontalScroller.h"
+#import "AlbumView.h"
 
 @interface ViewController () <
     UITableViewDataSource,
-    UITableViewDelegate
+    UITableViewDelegate,
+    HorizontalScrollerDelegate
 >
 //UITableView *dataTable;
 //NSArray *allAlbums;
@@ -20,6 +23,8 @@
 //int currentAlbumIndex;
 
 @property (nonatomic, strong) UITableView *dataTable;
+
+@property (nonatomic, strong) HorizontalScroller *scroller;
 
 @property (nonatomic, strong) NSArray *allAlbums;
 
@@ -84,6 +89,8 @@
     [self.dataTable reloadData];
 }
 
+
+#pragma mark -
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.currentAlbumData[@"titles"] count];
@@ -99,6 +106,20 @@
     cell.textLabel.text = self.currentAlbumData[@"titles"][indexPath.row];
     cell.detailTextLabel.text = self.currentAlbumData[@"values"][indexPath.row];
     return cell;
+}
+
+- (void)horizontalScroller:(HorizontalScroller *)scroller didSelectedViewAtIndex:(NSInteger)index {
+    self.currentAlbumIndex = index;
+    [self showDataForAlbumAtIndex:index];
+}
+
+- (NSInteger)numberOfViewsForHorizontalScroller:(HorizontalScroller *)scroller {
+    return self.allAlbums.count;
+}
+
+- (UIView *)horizontalScroller:(HorizontalScroller *)scroller viewAtIndex:(NSInteger)index {
+    Album *album = self.allAlbums[index];
+    return [[AlbumView alloc] initWithFrame:CGRectMake(0, 0, 100, 100) albumCover:album.coverUrl];
 }
 
 @end

@@ -23,6 +23,7 @@
 		795D12B31D143D470016695C /* PersistencyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12B21D143D470016695C /* PersistencyManager.m */; };
 		795D12B61D1444E00016695C /* HTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12B51D1444E00016695C /* HTTPClient.m */; };
 		795D12B91D1447C60016695C /* Album+TableRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12B81D1447C60016695C /* Album+TableRepresentation.m */; };
+		795D12BC1D14D2AF0016695C /* HorizontalScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D12BB1D14D2AF0016695C /* HorizontalScroller.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,8 @@
 		795D12B51D1444E00016695C /* HTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPClient.m; sourceTree = "<group>"; };
 		795D12B71D1447C60016695C /* Album+TableRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Album+TableRepresentation.h"; sourceTree = "<group>"; };
 		795D12B81D1447C60016695C /* Album+TableRepresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Album+TableRepresentation.m"; sourceTree = "<group>"; };
+		795D12BA1D14D2AF0016695C /* HorizontalScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalScroller.h; sourceTree = "<group>"; };
+		795D12BB1D14D2AF0016695C /* HorizontalScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalScroller.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,8 @@
 			children = (
 				795D12AB1D1437F30016695C /* AlbumView.h */,
 				795D12AC1D1437F30016695C /* AlbumView.m */,
+				795D12BA1D14D2AF0016695C /* HorizontalScroller.h */,
+				795D12BB1D14D2AF0016695C /* HorizontalScroller.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -235,6 +240,7 @@
 				795D12AD1D1437F30016695C /* AlbumView.m in Sources */,
 				795D12861D142F390016695C /* AppDelegate.m in Sources */,
 				795D12831D142F390016695C /* main.m in Sources */,
+				795D12BC1D14D2AF0016695C /* HorizontalScroller.m in Sources */,
 				795D12AA1D1434F70016695C /* Album.m in Sources */,
 				795D12B91D1447C60016695C /* Album+TableRepresentation.m in Sources */,
 				795D12B61D1444E00016695C /* HTTPClient.m in Sources */,
