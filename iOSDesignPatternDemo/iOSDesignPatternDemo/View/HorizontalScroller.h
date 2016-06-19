@@ -21,6 +21,7 @@
 @protocol HorizontalScrollerDelegate <NSObject>
 
 @required
+
 - (NSInteger)numberOfViewsForHorizontalScroller:(HorizontalScroller *)scroller;
 
 - (UIView *)horizontalScroller:(HorizontalScroller *)scroller viewAtIndex:(NSInteger)index;

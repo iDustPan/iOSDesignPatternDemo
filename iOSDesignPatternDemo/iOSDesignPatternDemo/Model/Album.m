@@ -10,8 +10,6 @@
 
 @implementation Album
 
-
-
 - (instancetype)initWithTitle:(NSString *)title artist:(NSString *)artist
                      coverUrl:(NSString *)coverUrl year:(NSString *)year {
     
@@ -24,6 +22,26 @@
         _year = year;
     }
     
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.artist forKey:@"artist"];
+    [aCoder encodeObject:self.coverUrl forKey:@"coverUrl"];
+    [aCoder encodeObject:self.year forKey:@"year"];
+    [aCoder encodeObject:self.genre forKey:@"genre"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    
+    if (self = [super init]) {
+        _title = [aDecoder decodeObjectForKey:@"title"];
+        _artist = [aDecoder decodeObjectForKey:@"artist"];
+        _coverUrl = [aDecoder decodeObjectForKey:@"coverUrl"];
+        _year = [aDecoder decodeObjectForKey:@"year"];
+        _genre = [aDecoder decodeObjectForKey:@"genre"];
+    }
     return self;
 }
 

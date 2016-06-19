@@ -18,5 +18,7 @@
 - (void)addAlbum:(Album *)album atIndex:(int)index;
 - (void)deleteAlbumAtIndex:(int)index;
 
+- (void)saveAlbums;
+
 
 @end

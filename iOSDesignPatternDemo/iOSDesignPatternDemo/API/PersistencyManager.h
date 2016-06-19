@@ -6,7 +6,7 @@
 //  Copyright © 2016年 cn.xupan.www. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class Album;
 
@@ -18,5 +18,11 @@
 - (void)addAlbum:(Album *)album atIndex:(NSInteger)index;
 
 - (void)deleteAlbumAtIndex:(NSInteger)index;
+
+- (void)saveAlbums;
+
+- (void)saveImage:(UIImage *)image filename:(NSString*)filename;
+
+- (UIImage *)getImage:(NSString*)filename;
 
 @end

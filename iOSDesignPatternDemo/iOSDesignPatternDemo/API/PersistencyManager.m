@@ -17,6 +17,15 @@
 
 @implementation PersistencyManager
 
+- (void)saveAlbums {
+    NSString *filename = [NSHomeDirectory() stringByAppendingString:@"/Documents/albums.bin"];
+    
+//    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.albums];
+//    [data writeToFile:filename atomically:YES];
+    ![NSKeyedArchiver archiveRootObject:self.albums toFile:filename] ? NSLog(@"归档失败") : NSLog(@"归档成功");
+    
+}
+
 - (NSArray *)getAlbums {
     return self.albums;
 }
@@ -44,15 +53,44 @@
 {
     self = [super init];
     if (self) {
-        // a dummy list of albums
+        
+//        NSData *data = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingString:@"/Documents/albums.bin"]];
+//        
+//        self.albums = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        
+        self.albums = [NSKeyedUnarchiver unarchiveObjectWithFile:[NSHomeDirectory() stringByAppendingString:@"/Documents/albums.bin"]];
+        
+        if (self.albums != nil) return self;
+        
         self.albums = [NSMutableArray arrayWithArray:
-                  @[[[Album alloc] initWithTitle:@"Best of Bowie" artist:@"David Bowie" coverUrl:@"http://www.coversproject.com/static/thumbs/album/album_david%20bowie_best%20of%20bowie.png" year:@"1992"],
-                    [[Album alloc] initWithTitle:@"It's My Life" artist:@"No Doubt" coverUrl:@"http://www.coversproject.com/static/thumbs/album/album_no%20doubt_its%20my%20life%20%20bathwater.png" year:@"2003"],
-                    [[Album alloc] initWithTitle:@"Nothing Like The Sun" artist:@"Sting" coverUrl:@"http://www.coversproject.com/static/thumbs/album/album_sting_nothing%20like%20the%20sun.png" year:@"1999"],
-                    [[Album alloc] initWithTitle:@"Staring at the Sun" artist:@"U2" coverUrl:@"http://www.coversproject.com/static/thumbs/album/album_u2_staring%20at%20the%20sun.png" year:@"2000"],
-                    [[Album alloc] initWithTitle:@"American Pie" artist:@"Madonna" coverUrl:@"http://www.coversproject.com/static/thumbs/album/album_madonna_american%20pie.png" year:@"2000"]]];
+                  @[[[Album alloc] initWithTitle:@"Best of Bowie" artist:@"David Bowie" coverUrl:@"http://t-1.tuzhan.com/422022f85414/c-2/l/2013/05/23/22/ee4dd25e87fb4b27b63710ea6945491b.jpg" year:@"1992"],
+                    [[Album alloc] initWithTitle:@"It's My Life" artist:@"No Doubt" coverUrl:@"http://i.epetbar.com/2014-06/07/a08a0303f1e8e41b880588891c453b16.jpg" year:@"2003"],
+                    [[Album alloc] initWithTitle:@"Nothing Like The Sun" artist:@"Sting" coverUrl:@"http://www.meiwai.net/uploads/allimg/c150822/1440244203H130-15524.png" year:@"1999"],
+                    [[Album alloc] initWithTitle:@"Staring at the Sun" artist:@"U2" coverUrl:@"http://www.meiwai.net/uploads/allimg/c150907/14416140N1GZ-51951.jpg" year:@"2000"],
+                    [[Album alloc] initWithTitle:@"American Pie" artist:@"Madonna" coverUrl:@"http://p3.gexing.com/G1/M00/CB/00/rBACFFKR5mDScmocAABWdHJnshw497.jpg" year:@"2000"]]];
+        [self saveAlbums];
     }
     return self;
+}
+
+- (void)saveImage:(UIImage*)image filename:(NSString*)filename
+{
+    
+    filename = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", filename];
+    
+    NSData *data = UIImagePNGRepresentation(image);
+    
+    [data writeToFile:filename atomically:YES];
+    
+}
+
+- (UIImage*)getImage:(NSString*)filename
+{
+    filename = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", filename];
+    
+    NSData *data = [NSData dataWithContentsOfFile:filename];
+    
+    return [UIImage imageWithData:data];
 }
 
 @end

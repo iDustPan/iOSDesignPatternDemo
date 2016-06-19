@@ -11,6 +11,8 @@
 #import "HTTPClient.h"
 #import "Album.h"
 
+#define BLDownloadImageNotification @"BLDownloadImageNotification"
+
 @interface LibraryAPI ()
 
 @property (nonatomic, strong) HTTPClient *httpClient;
@@ -44,8 +46,17 @@
         self.httpClient = [[HTTPClient alloc] init];
         self.persistencyManager = [[PersistencyManager alloc] init];
         self.isOnline = NO;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(downloadImage:)
+                                                     name:BLDownloadImageNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)saveAlbums {
+    [self.persistencyManager saveAlbums];
 }
 
 - (NSArray*)getAlbums {
@@ -77,5 +88,46 @@
     }
 }
 
+- (void)downloadImage:(NSNotification*)notification
+
+{
+    
+    // 1
+    UIImageView *imageView = notification.userInfo[@"imageView"];
+    
+    NSString *coverUrl = notification.userInfo[@"coverUrl"];
+    
+    // 2
+    
+    imageView.image = [self.persistencyManager getImage:[coverUrl lastPathComponent]];
+    
+    if (imageView.image == nil)
+        
+    {
+        
+        // 3
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            UIImage *image = [self.httpClient downloadImage:coverUrl];
+            
+            // 4
+            
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                
+                imageView.image = image;
+                
+                [self.persistencyManager saveImage:image filename:[coverUrl lastPathComponent]];
+                
+            });
+            
+        });
+        
+    }   
+    
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end
