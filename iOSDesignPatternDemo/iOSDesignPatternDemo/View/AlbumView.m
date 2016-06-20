@@ -44,7 +44,7 @@
 - (instancetype)initWithFrame:(CGRect)frame albumCover:(NSString *)albumCover {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor blackColor];
-       //   添加封面图
+        //   添加封面图
         [self addSubview:self.coverImage];
         //  添加下载指示器
         [self addSubview:self.indicator];
@@ -56,12 +56,14 @@
                                                           userInfo:@{
                                                                      @"imageView": self.coverImage, @"coverUrl": albumCover
                                                                      }];
-        
     }
     return self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary<NSString *,id> *)change
+                       context:(void *)context
+{
     
     if ([keyPath isEqualToString:@"image"]) {
         [self.indicator stopAnimating];

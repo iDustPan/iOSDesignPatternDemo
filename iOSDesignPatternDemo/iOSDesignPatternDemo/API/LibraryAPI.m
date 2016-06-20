@@ -78,7 +78,7 @@
     }
 }
 
-- (void)deleteAlbumAtIndex:(int)index {
+- (void)deleteAlbumAtIndex:(NSInteger)index {
     
     [self.persistencyManager deleteAlbumAtIndex:index];
     

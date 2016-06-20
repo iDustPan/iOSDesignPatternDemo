@@ -32,12 +32,30 @@
 
 @property (nonatomic, assign) NSInteger currentAlbumIndex;
 
+@property (nonatomic, strong) UIToolbar *toolBar;
+
+@property (nonatomic, strong) NSMutableArray *undoStack;
+
 @end
 
 @implementation ViewController
 
 
 #pragma mark - UI控件懒加载
+
+-(UIToolbar *)toolBar {
+    if (!_toolBar) {
+        _toolBar = [[UIToolbar alloc] init];
+        
+        UIBarButtonItem *undoItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo target:self action:@selector(undoAction)];
+        undoItem.enabled = NO;
+        UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteAlbum)];
+        _toolBar.items = @[undoItem, spaceItem, deleteItem];
+    }
+    return _toolBar;
+}
+
 - (UITableView *)dataTable {
     if (!_dataTable) {
         _dataTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -57,13 +75,15 @@
     return _scroller;
 }
 
-#pragma mark - 获取专辑数据
+#pragma mark - 数据懒加载
 - (NSArray *)allAlbums {
     if (!_allAlbums) {
         _allAlbums = [[LibraryAPI sharedInstance] getAlbums];
     }
     return _allAlbums;
 }
+
+#pragma mark - 生命周期方法
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,8 +94,11 @@
     
     self.currentAlbumIndex = 0;
     
+    self.undoStack = [NSMutableArray arrayWithCapacity:42];
+    
     [self.view addSubview:self.dataTable];
     [self.view addSubview:self.scroller];
+    [self.view addSubview:self.toolBar];
     
     [self reloadScroller];
     [self showDataForAlbumAtIndex:self.currentAlbumIndex];
@@ -83,11 +106,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCurrentState) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
     self.scroller.frame = CGRectMake(0, 0, self.view.frame.size.width, 120);
-    self.dataTable.frame = CGRectMake(0, 120, self.view.bounds.size.width, self.view.bounds.size.height - 120);
+    self.dataTable.frame = CGRectMake(0, 130, self.view.bounds.size.width, self.view.bounds.size.height - 200);
+    self.toolBar.frame = CGRectMake(0, self.view.frame.size.height-44, self.view.frame.size.width, 44);
+    
 }
 
 - (void)showDataForAlbumAtIndex:(NSInteger)albumIndex
@@ -120,7 +150,18 @@
     [self showDataForAlbumAtIndex:self.currentAlbumIndex];
 }
 
+- (void)addAlbum:(Album*)album atIndex:(int)index
+{
+    
+    [[LibraryAPI sharedInstance] addAlbum:album atIndex:index];
+    
+    self.currentAlbumIndex = index;
+    
+    [self reloadScroller];
+}
+
 #pragma mark -UITableViewDataSource
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.currentAlbumData[@"titles"] count];
@@ -131,7 +172,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:@"cell"];
     }
     cell.textLabel.text = self.currentAlbumData[@"titles"][indexPath.row];
     cell.detailTextLabel.text = self.currentAlbumData[@"values"][indexPath.row];
@@ -161,31 +203,64 @@
 #pragma mark - 备忘录模式
 - (void)saveCurrentState
 {
-    
     // When the user leaves the app and then comes back again, he wants it to be in the exact same state
     
     // he left it. In order to do this we need to save the currently displayed album.
     
     // Since it's only one piece of information we can use NSUserDefaults.
     
-    [[NSUserDefaults standardUserDefaults] setInteger:self.currentAlbumIndex forKey:@"currentAlbumIndex"];
-    
+    [[NSUserDefaults standardUserDefaults] setInteger:self.currentAlbumIndex
+                                               forKey:@"currentAlbumIndex"];
     [[LibraryAPI sharedInstance] saveAlbums];
-    
 }
 
 - (void)loadPreviousState
-
 {
-    
     self.currentAlbumIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentAlbumIndex"];
-    
     [self showDataForAlbumAtIndex:self.currentAlbumIndex];
-    
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+#pragma mark - 点击事件
+
+- (void)undoAction
+{
+    if (self.undoStack.count > 0)
+    {
+        NSInvocation *undoAction = [self.undoStack lastObject];
+        [self.undoStack removeLastObject];
+        [undoAction invoke];
+    }
+    
+    if (self.undoStack.count == 0)
+    {
+        [self.toolBar.items[0] setEnabled:NO];
+    }
+}
+
+- (void)deleteAlbum
+{
+    // 1
+    Album *deleteAlbum = self.allAlbums[self.currentAlbumIndex];
+    
+    // 2
+    NSMethodSignature *sig = [self methodSignatureForSelector:@selector(addAlbum:atIndex:)];
+    NSInvocation *undoInvocation = [NSInvocation invocationWithMethodSignature:sig];
+    
+    [undoInvocation setTarget:self];
+    [undoInvocation setSelector:@selector(addAlbum:atIndex:)];
+    [undoInvocation setArgument:&deleteAlbum atIndex:2];
+    [undoInvocation setArgument:&_currentAlbumIndex atIndex:3];
+    [undoInvocation retainArguments];
+    
+    // 3
+    [self.undoStack addObject:undoInvocation];
+    
+    // 4
+    [[LibraryAPI sharedInstance] deleteAlbumAtIndex:self.currentAlbumIndex];
+    [self reloadScroller];
+    
+    // 5
+    [self.toolBar.items[0] setEnabled:YES];
 }
 
 @end
