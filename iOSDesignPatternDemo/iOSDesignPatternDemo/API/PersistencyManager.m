@@ -23,7 +23,6 @@
 //    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.albums];
 //    [data writeToFile:filename atomically:YES];
     ![NSKeyedArchiver archiveRootObject:self.albums toFile:filename] ? NSLog(@"归档失败") : NSLog(@"归档成功");
-    
 }
 
 - (NSArray *)getAlbums {
@@ -40,7 +39,6 @@
 }
 
 - (void)deleteAlbumAtIndex:(NSInteger)index {
-    
     //  注意数组长度的问题
     if (self.albums.count < index) {
         NSLog(@"并没有盖章专辑啊～");
@@ -75,21 +73,15 @@
 
 - (void)saveImage:(UIImage*)image filename:(NSString*)filename
 {
-    
     filename = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", filename];
-    
     NSData *data = UIImagePNGRepresentation(image);
-    
     [data writeToFile:filename atomically:YES];
-    
 }
 
 - (UIImage*)getImage:(NSString*)filename
 {
     filename = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@", filename];
-    
     NSData *data = [NSData dataWithContentsOfFile:filename];
-    
     return [UIImage imageWithData:data];
 }
 

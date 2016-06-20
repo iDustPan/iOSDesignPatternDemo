@@ -21,6 +21,19 @@
 /** 发布年 */
 @property (nonatomic, copy, readonly) NSString *year;
 
-- (instancetype)initWithTitle:(NSString *)title artist:(NSString *)artist coverUrl:(NSString *)coverUrl year:(NSString *)year;
+/**
+ *  专辑模型初始化接口
+ *
+ *  @param title    专辑标题
+ *  @param artist   专辑艺术家
+ *  @param coverUrl 封面地址
+ *  @param year     发布年
+ *
+ *  @return 保存的专辑模型
+ */
+- (instancetype)initWithTitle:(NSString *)title
+                       artist:(NSString *)artist
+                     coverUrl:(NSString *)coverUrl
+                         year:(NSString *)year;
 
 @end

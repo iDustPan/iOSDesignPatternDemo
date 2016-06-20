@@ -40,7 +40,6 @@
 
 @implementation ViewController
 
-
 #pragma mark - UI控件懒加载
 
 -(UIToolbar *)toolBar {
